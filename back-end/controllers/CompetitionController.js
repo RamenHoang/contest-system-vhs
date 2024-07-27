@@ -1189,6 +1189,18 @@ const deleteCompetition = async (req, res, next) => {
       },
     });
 
+    const participant = await Participant.findAll({
+      where: {
+        idCompetition: id,
+      },
+    });
+
+    await UserAnswers.destroy({
+      where: {
+        participantId: participant.map((item) => item.id),
+      },
+    });
+
     await Participant.destroy({
       where: {
         idCompetition: id,
