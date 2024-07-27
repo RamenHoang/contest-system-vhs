@@ -76,9 +76,7 @@ export const CompetitionApi = {
 
   async getStatistics(id: string) {
     try {
-      const { data } = await axiosClient.get(
-        `/competitions/statistic-participant/${id}?pageIndex=1&pageSize=200&fromDate=2024-01-01 17:00:00&toDate=2024-12-31 17:00:00`
-      );
+      const { data } = await axiosClient.get(`/competitions/statistic-participant/${id}?pageIndex=1&pageSize=5`);
       return data;
     } catch (error) {
       console.log(error);

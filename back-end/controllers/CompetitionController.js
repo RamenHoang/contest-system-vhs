@@ -780,11 +780,11 @@ const statisticParticipant = async (req, res, next) => {
   try {
     const { id } = req.params;
     const {
-      fromDate,
-      toDate,
-      pageIndex = 1,
-      pageSize = 50,
-      keyword = "",
+      fromDate = null,
+      toDate = null,
+      pageIndex = null,
+      pageSize = null,
+      keyword = null,
     } = req.query;
 
     const { data, count } = await getResultParticipant(
@@ -810,8 +810,8 @@ const exportExcel = async (req, res, next) => {
     const {
       fromDate = competition.timeStart,
       toDate = competition.timeEnd,
-      pageIndex = 1,
-      pageSize = 50,
+      pageIndex = null,
+      pageSize = null,
       keyword = "",
     } = req.query;
 
@@ -825,14 +825,11 @@ const exportExcel = async (req, res, next) => {
       next
     );
 
-    console.log(1 + " " + data);
-
     // Initialize a new workbook and add a worksheet
     const workbook = new ExcelJS.Workbook();
-    const worksheet = workbook.addWorksheet("Kết quả trắc nghiệm");
+    const worksheet = workbook.addWorksheet("Kết quả cuộc thi");
     const worksheet2 = workbook.addWorksheet("Thống kê lượt đăng ký");
     const worksheet3 = workbook.addWorksheet("Kết quả cao nhất");
-    const worksheet4 = workbook.addWorksheet("Kết quả tự luận");
 
     // Set up worksheet 1
     worksheet.columns = [
@@ -845,26 +842,53 @@ const exportExcel = async (req, res, next) => {
       { header: "Giới tính", key: "sex", width: 20 },
       { header: "Thông tin khác", key: "other", width: 20 },
       { header: "Ngày dự thi", key: "createdAt", width: 20 },
-      { header: "Kết quả", key: "totalCorrectAnswers", width: 20 },
+      { header: "Kết quả trắc nghiệm", key: "totalCorrectAnswers", width: 20 },
       { header: "Độ chính xác", key: "correctAnswersRate", width: 20 },
       { header: "Thời gian làm", key: "duration", width: 20 },
+      { header: "Câu hỏi tự luận", key: "question", width: 20 },
+      { header: "Câu trả lời tự luận", key: "answer", width: 20 },
     ];
 
     // Add data to the worksheet
     data.forEach((d) => {
-      worksheet.addRow({
-        fullName: d.fullName ?? "",
-        phone: d.phone ?? "",
-        email: d.email ?? "",
-        birthday: d.birthday ?? "",
-        CCCD: d.CCCD ?? "",
-        job: d.job ?? "",
-        sex: d.sex ?? "",
-        other: d.other ?? "",
-        createdAt: d.createdAt ?? "",
-        totalCorrectAnswers: d.totalCorrectAnswers ?? "",
-        correctAnswersRate: d.correctAnswersRate ?? "",
-        duration: d.duration ?? "",
+      d.userAnswers.forEach((answer, index) => {
+        let row = {};
+        if (index == 0) {
+          row = {
+            fullName: d.fullName ?? '',
+            phone: d.phone ?? '',
+            email: d.email ?? '',
+            birthday: d.birthday ?? '',
+            CCCD: d.CCCD ?? '',
+            job: d.job ?? '',
+            sex: d.sex ?? '',
+            other: d.other ?? '',
+            createdAt: d.createdAt ?? '',
+            totalCorrectAnswers: d.totalCorrectAnswers ?? '',
+            correctAnswersRate: d.correctAnswersRate ?? '',
+            duration: d.duration ?? ''
+          };
+        } else {
+          row = {
+            fullName: '',
+            phone: '',
+            email: '',
+            birthday: '',
+            CCCD: '',
+            job: '',
+            sex: '',
+            other: '',
+            createdAt: '',
+            totalCorrectAnswers: '',
+            correctAnswersRate: '',
+            duration: '',
+          };
+        }
+
+        row.question = answer.question ?? '';
+        row.answer = answer.answer ?? '';
+
+        worksheet.addRow(row);
       });
     });
 
@@ -903,7 +927,6 @@ const exportExcel = async (req, res, next) => {
 
     let duration = "";
     const pHightestScore = await getParticipantHightestScore(id, next);
-    console.log(3 + " " + pHightestScore);
 
     if (pHightestScore.startTime != null && pHightestScore.finishTime != null) {
       const timeDistance = moment(pHightestScore.finishTime).diff(
@@ -928,54 +951,6 @@ const exportExcel = async (req, res, next) => {
         duration === "" ? "" : `${duration.minutes()}:${duration.seconds()}`,
     });
 
-    worksheet4.columns = [
-      { header: "Họ tên", key: "fullName", width: 20 },
-      { header: "Số điện thoại", key: "phone", width: 20 },
-      { header: "Email", key: "email", width: 20 },
-      { header: "Ngày sinh", key: "birthday", width: 20 },
-      { header: "CCCD", key: "CCCD", width: 20 },
-      { header: "Nghề nghiệp", key: "job", width: 20 },
-      { header: "Giới tính", key: "sex", width: 20 },
-      { header: "Thông tin khác", key: "other", width: 20 },
-      { header: "Ngày dự thi", key: "createdAt", width: 20 },
-      { header: "Câu hỏi", key: "question", width: 20 },
-      { header: "Câu trả lời", key: "answer", width: 20 },
-    ];
-
-    data.forEach((d) => {
-      d.userAnswers.forEach((answer, index) => {
-        if (index == 0) {
-          worksheet4.addRow({
-            fullName: d.fullName ?? "",
-            phone: d.phone ?? "",
-            email: d.email ?? "",
-            birthday: d.birthday ?? "",
-            CCCD: d.CCCD ?? "",
-            job: d.job ?? "",
-            sex: d.sex ?? "",
-            other: d.other ?? "",
-            createdAt: d.createdAt ?? "",
-            question: answer.question ?? "",
-            answer: answer.answer ?? "",
-          });
-        } else {
-          worksheet4.addRow({
-            fullName: "",
-            phone: "",
-            email: "",
-            birthday: "",
-            CCCD: "",
-            job: "",
-            sex: "",
-            other: "",
-            createdAt: "",
-            question: answer.question ?? "",
-            answer: answer.answer ?? "",
-          });
-        }
-      });
-    });
-
     // Set the response headers
     res.setHeader(
       "Content-Type",
@@ -997,60 +972,59 @@ const exportExcel = async (req, res, next) => {
 
 const getResultParticipant = async (
   id,
-  fromDate,
-  toDate,
-  pageIndex = 1,
-  pageSize = 50,
+  fromDate = null,
+  toDate = null,
+  pageIndex = null,
+  pageSize = null,
   keyword = "",
   next
 ) => {
   try {
-    const whereClause = {
-      idCompetition: id,
-      // fullName: {
-      //   [Op.like]: `%${keyword}%`,
-      // },
-      createdAt: {
-        [Op.gte]: fromDate,
-        [Op.lte]: toDate,
-      },
-    };
-
-    const offset = (+pageIndex - 1) * +pageSize;
-
     const query = {
-      where: whereClause,
       attributes: [
-        "id",
-        "fullName",
-        "phone",
-        "email",
-        "birthday",
-        "CCCD",
-        "job",
-        "sex",
-        "other",
-        "createdAt",
-        "totalCorrectAnswers",
-        "correctAnswersRate",
-        "startTime",
-        "finishTime",
+        'id',
+        'fullName',
+        'phone',
+        'email',
+        'birthday',
+        'CCCD',
+        'job',
+        'sex',
+        'other',
+        'createdAt',
+        'totalCorrectAnswers',
+        'correctAnswersRate',
+        'startTime',
+        'finishTime',
       ],
-      order: [["createdAt", "DESC"]],
-      // limit: +pageSize,
-      // offset: offset,
+      where: {
+        idCompetition: id,
+      },
+      order: [['createdAt', 'DESC']],
       include: [
         {
           model: UserAnswers,
           include: [
             {
               model: QuestionBanking,
-              attributes: ["title"],
+              attributes: ['title'],
             },
           ]
         }
       ]
-    };
+    }
+
+    if (fromDate != null && toDate != null) {
+      query.where.createdAt = {
+        [Op.between]: [fromDate, toDate],
+      };
+    }
+
+    if (pageIndex != null && pageSize != null) {
+      const offset = (+pageIndex - 1) * +pageSize;
+      query.limit = +pageSize;
+      query.offset = offset;
+    }
 
     const { count, rows: participant } = await Participant.findAndCountAll(query);
 
