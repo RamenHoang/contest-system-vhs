@@ -1195,6 +1195,12 @@ const deleteCompetition = async (req, res, next) => {
       },
     });
 
+    await Organizer.destroy({
+      where: {
+        competitionId: id,
+      },
+    });
+
     await competition.destroy();
 
     res.status(StatusCodes.OK).json(ApiResponse(true, 1));
