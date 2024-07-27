@@ -6,3 +6,4 @@ logs
 ecosystem.config.js
 public/*
 !.gitkeep
+!public/default_banner.jpg

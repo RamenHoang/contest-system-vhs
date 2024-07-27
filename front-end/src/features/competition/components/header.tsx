@@ -56,7 +56,7 @@ export const Header = ({ data }: { data: IStartRequired }) => {
         </div>
       </nav>
 
-      <div className="px-4 lg-px-6">
+      <div className='px-4 lg-px-6'>
         <div className="max-w-screen-xl mx-auto mt-4 lg:mt-8" style={{display: 'table'}}>
           <Image
             loading="lazy"
@@ -65,7 +65,7 @@ export const Header = ({ data }: { data: IStartRequired }) => {
             src={
               data?.bannerUrl !== null && data?.bannerUrl !== ""
                 ? `${import.meta.env.VITE_DOMAIN_URL}${data?.bannerUrl}`
-                : `${import.meta.env.VITE_DOMAIN_URL}/1720627369516-336890955_223175616882164_6663631839570440780_n.jpg`
+                : `${import.meta.env.VITE_DOMAIN_URL}/default_banner.jpg`
             }
             alt="banner"
             className="max-w-full h-auto mx-auto rounded-xl object-cover"

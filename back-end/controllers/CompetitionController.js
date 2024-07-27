@@ -157,7 +157,7 @@ const createCompetition = async (req, res, next) => {
         );
       }
 
-      competition.bannerUrl = bannerUrl ?? competition.bannerUrl;
+      competition.bannerUrl = bannerUrl ? bannerUrl : competition.bannerUrl;
       competition.name = name ?? competition.name;
       competition.rules = rules ?? competition.name;
       competition.password = password ?? competition.password;
