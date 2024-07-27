@@ -1,0 +1,32 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "BACKEND",
+            "runtimeExecutable": "/Users/er_macbook_185/.nvm/versions/node/v18.20.3/bin/npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "runtimeArgs": ["run", "server"],
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}/back-end"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "FRONTEND",
+            "runtimeExecutable": "/Users/er_macbook_185/.nvm/versions/node/v18.20.3/bin/npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "runtimeArgs": ["run", "dev"],
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}/front-end"
+        },
+    ]
+}

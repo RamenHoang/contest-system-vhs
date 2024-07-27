@@ -1,0 +1,8 @@
+node_modules
+logs
+*.pem
+.env
+.vscode/*
+ecosystem.config.js
+public/*
+!.gitkeep

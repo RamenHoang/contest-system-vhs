@@ -1,0 +1,82 @@
+@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply m-0 box-border p-0 font-lexend;
+  }
+
+  /* Customize scroll bar */
+  * ::-webkit-scrollbar {
+    @apply w-4;
+  }
+
+  * ::-webkit-scrollbar-thumb {
+    @apply h-14 rounded-lg border-4 border-solid border-transparent bg-[rgba(96,96,96,0.5)] bg-clip-content;
+  }
+  * ::-webkit-scrollbar-thumb:hover {
+    @apply bg-[#606060];
+  }
+
+  strong,
+  strong * {
+    @apply font-medium;
+  }
+}
+
+.ant-layout-sider {
+  /* background-color: #fafafa !important; */
+}
+
+.ant-layout-sider-trigger {
+  background-color: #fafafa !important;
+}
+
+.ant-layout-sider-trigger span svg {
+  color: black !important;
+}
+
+.ant-card-body {
+  padding: 10px !important;
+}
+
+.ant-steps-item-title {
+  font-size: 14px !important;
+}
+
+.ant-steps-item-content {
+  margin-top: 2px !important;
+}
+
+.ant-form-item {
+  margin-bottom: 10px;
+}
+
+.ant-picker.ant-picker-outlined.css-dev-only-do-not-override-f7vrd6 {
+  width: 282px;
+}
+
+.ant-modal-title {
+  font-size: 24px !important;
+  margin-bottom: 20px !important;
+  color: #585858 !important;
+}
+
+/* .ant-modal-body {
+  font-size: 18px !important;
+} */
+
+.ant-modal-footer {
+  margin-top: 30px !important;
+}
+
+.ant-col.ant-form-item-label > label {
+  font-size: 13px !important;
+}
+
+/* .ant-row {
+  row-gap: 16px;
+} */
