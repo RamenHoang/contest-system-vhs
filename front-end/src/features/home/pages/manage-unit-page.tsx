@@ -189,7 +189,7 @@ const ManageUnit = () => {
               </div>
             </label>
             <Link
-              to='/public/upload/doc/de-thi-mau.docx'
+              to='/public/example_units.xlsx'
               className='col-span-3 p-6 border-l-gray-400 border-dashed'
               download={true}
               target='_blank'
