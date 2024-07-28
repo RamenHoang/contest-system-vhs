@@ -127,6 +127,7 @@ export interface IStartRequired {
   infoRequire: number[];
   units: ISubUnit[];
   outOfAttempts: boolean;
+  testDuration: number;
 }
 
 export interface IParticipant {
