@@ -159,8 +159,8 @@ const ManageUnit = () => {
             />
           </Tooltip>
         </Space>
-      ),
-    },
+      )
+    }
   ];
 
   return (
@@ -184,8 +184,8 @@ const ManageUnit = () => {
             <label className='col-span-9 p-6 cursor-pointer'>
               <div className='flex justify-center items-center gap-2'>
                 <img src={`${import.meta.env.VITE_DOMAIN_URL}/icon_xlsx.png`} alt='' className='w-16' />
-                <div className='text-center'>Chọn file xlsx để nhập đề nhanh tại đây</div>
-                <input type='file' className='hidden' accept='.xlsx' onChange={handleFileChange}/>
+                <div className='text-center'>Chọn file xlsx để nhập đơn vị nhanh tại đây</div>
+                <input type='file' className='hidden' accept='.xlsx' onChange={handleFileChange} />
               </div>
             </label>
             <Link
