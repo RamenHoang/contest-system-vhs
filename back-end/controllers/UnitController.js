@@ -96,9 +96,57 @@ const deleteUnit = async (req, res, next) => {
   }
 }
 
+const importFromFile = async (req, res, next) => {
+  try {
+    const acceptedExtensions = ['xlsx'];
+    //get extension of file
+    const fileExtension = req.file.originalname.split('.').pop();
+    //check if file extension is valid
+    if (!acceptedExtensions.includes(fileExtension)) {
+      throw new ApiError(
+        ApiResponse(false, 0, StatusCodes.BAD_REQUEST, 'Chỉ chấp nhận file excel với định dạng xlsx')
+      );
+    }
+
+    const workbook = new ExcelJS.Workbook();
+
+    // Load file from req
+    await workbook.xlsx.readFile(req.file.path);
+
+    const worksheet = workbook.getWorksheet("Đơn vị");
+
+    // Ech row has 2 cells: no. and unit name
+    // Only get the unit name where row's no. is number
+    // no. may be 1, 2, 3, I, II, III, ...
+
+    const units = [];
+
+    worksheet.eachRow((row) => {
+      const _no = row.getCell(1);
+      const unitName = row.getCell(2);
+
+      // _no may be 1, 2, 3, I, II, III, ...
+      // If _no is number, then it's the row we need
+      if (!isNaN(_no.value)) {
+        units.push({
+          name: unitName.value,
+        });
+      }
+    });
+
+    await Unit.bulkCreate(units);
+
+    return res.status(StatusCodes.CREATED).json(ApiResponse(units));
+  } catch (error) {
+    console.error('Error importing units from file:', error);
+    next(error);
+  }
+}
+
 module.exports = {
   getUnits,
   createUnit,
   deleteUnit,
-  editUnit
+  editUnit,
+  importFromFile
 };

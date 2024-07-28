@@ -73,5 +73,22 @@ export const UnitApi = {
     } catch (error) {
       console.log(error);
     }
-  }
+  },
+
+  async importUnits(file: File) {
+    try {
+      const formData = new FormData();
+      formData.append('xlsx', file); // Use the correct key as in your Postman setup
+
+      const { data } = await axiosClient.post('/units/import_from_file', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+      return data;
+    } catch (error) {
+      console.error('Failed to upload file:', error);
+      throw error;
+    }
+  },
 };

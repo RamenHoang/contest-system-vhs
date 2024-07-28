@@ -7,3 +7,4 @@ ecosystem.config.js
 public/*
 !.gitkeep
 !public/default_banner.jpg
+!public/icon_xlsx.png

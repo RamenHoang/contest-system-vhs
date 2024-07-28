@@ -1,4 +1,4 @@
-import { Button, Modal, Space, Table, Tag, Tooltip, Input } from 'antd';
+import { Button, Modal, Space, Table, Tag, Tooltip, Input, message } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import dayjs from 'dayjs';
 import { PencilIcon, TrashIcon } from 'lucide-react';
@@ -9,6 +9,8 @@ import { useState } from 'react';
 import { useCreateUnit } from '../hooks/use-create-unit';
 import { useDeleteUnit } from '../hooks/use-delete-unit';
 import { useEditUnit } from '../hooks/use-edit-unit';
+import { Link } from 'react-router-dom';
+import { UnitApi } from '~/api/unit-api';
 
 const ManageUnit = () => {
   const { data: units, isLoading } = useUnits();
@@ -83,6 +85,22 @@ const ManageUnit = () => {
         window.location.reload();
       }
     });
+  };
+
+  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      try {
+        const res = await UnitApi.importUnits(file);
+        if (res?.statusCode === 200) {
+          message.success('Tải file thành công!');
+          window.location.reload();
+        }
+      } catch (error) {
+        message.error('Tải file thất bại!');
+        event.target.files = null;
+      }
+    }
   };
 
   const columns: ColumnsType<Partial<ISubUnit>> = [
@@ -161,6 +179,26 @@ const ManageUnit = () => {
               </div>
               <div className='mt-2'>Tạo mới</div>
             </div>
+          </div>
+          <div className='grid grid-cols-12 items-center w-full mx-auto border border-gray-300 border-dashed rounded-xl bg-gray-100 mb-5'>
+            <label className='col-span-9 p-6 cursor-pointer'>
+              <div className='flex justify-center items-center gap-2'>
+                <img src={`${import.meta.env.VITE_DOMAIN_URL}/icon_xlsx.png`} alt='' className='w-16' />
+                <div className='text-center'>Chọn file xlsx để nhập đề nhanh tại đây</div>
+                <input type='file' className='hidden' accept='.xlsx' onChange={handleFileChange}/>
+              </div>
+            </label>
+            <Link
+              to='/public/upload/doc/de-thi-mau.docx'
+              className='col-span-3 p-6 border-l-gray-400 border-dashed'
+              download={true}
+              target='_blank'
+            >
+              <div className='flex justify-center items-center gap-2'>
+                <img src='/image/dashboard/ic_download.svg' alt='' />
+                <div className='text-center'>Tải file mẫu</div>
+              </div>
+            </Link>
           </div>
           <Modal
             title='Tạo đơn vị'
