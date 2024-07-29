@@ -157,7 +157,7 @@ const IntroPage = () => {
               className='text-center text-cyan-700 text-xl lg:text-4xl font-bold uppercase'
               style={{ color: hexToRGBA(competition?.themeColor, 1) }}
             >
-              Cuộc thi kết thúc trong
+              Cuộc thi bắt đầu
             </div>
             <div className='mt-4 lg:mt-8'>
               <div
