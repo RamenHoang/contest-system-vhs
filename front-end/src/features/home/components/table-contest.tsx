@@ -116,13 +116,28 @@ export const TableContest = () => {
         );
       }
     },
-    // {
-    //   title: 'Số lượt làm bài',
-    //   key: 'numberOfExams',
-    //   dataIndex: 'numberOfExams',
-    //   width: 120,
-    //   align: 'center'
-    // },
+    {
+      title: '',
+      key: 'isPublic',
+      dataIndex: 'isPublic',
+      width: 120,
+      align: 'center',
+      render: (_, record) => {
+        if (record.isPublic === 'Xuất bản') {
+          return (
+            <Tag color='#52c41a' className='!text-white font-medium py-0.5 px-2 rounded-full'>
+              Đã xuất bản
+            </Tag>
+          );
+        }
+
+        return (
+          <Tag color='#faad14' className='!text-white font-medium py-0.5 px-2 rounded-full'>
+            Chưa xuất bản
+          </Tag>
+        );
+      }
+    },
     {
       title: 'Thao tác',
       key: 'action',

@@ -238,6 +238,7 @@ const getCompetitionById = async (req, res, next) => {
       organizer: organizer,
       units: competition.Units,
       testDuration: competition.testDuration,
+      isPublic: competition.isPublic,
     };
 
     res.status(StatusCodes.OK).json(ApiResponse(resData, 1));
