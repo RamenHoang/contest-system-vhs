@@ -114,7 +114,8 @@ export const CompetitionApi = {
 
   async exportExcelFast(id: string, pageIndex = 1, pageSize = 100) {
     try {
-      const url = `/competitions/export-excel/${id}?pageIndex=${pageIndex}&pageSize=${pageSize}`;
+      console.log(pageIndex, pageSize);
+      const url = `/competitions/export-excel/${id}`;
       const response = await axiosClient.get(url, {
         responseType: 'blob' // Important for handling binary data
       });

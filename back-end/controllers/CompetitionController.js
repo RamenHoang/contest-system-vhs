@@ -852,45 +852,66 @@ const exportExcel = async (req, res, next) => {
 
     // Add data to the worksheet
     data.forEach((d) => {
-      d.userAnswers.forEach((answer, index) => {
-        let row = {};
-        if (index == 0) {
-          row = {
-            fullName: d.fullName ?? '',
-            phone: d.phone ?? '',
-            email: d.email ?? '',
-            birthday: d.birthday ?? '',
-            CCCD: d.CCCD ?? '',
-            job: d.job ?? '',
-            sex: d.sex ?? '',
-            other: d.other ?? '',
-            createdAt: d.createdAt ?? '',
-            totalCorrectAnswers: d.totalCorrectAnswers ?? '',
-            correctAnswersRate: d.correctAnswersRate ?? '',
-            duration: d.duration ?? ''
-          };
-        } else {
-          row = {
-            fullName: '',
-            phone: '',
-            email: '',
-            birthday: '',
-            CCCD: '',
-            job: '',
-            sex: '',
-            other: '',
-            createdAt: '',
-            totalCorrectAnswers: '',
-            correctAnswersRate: '',
-            duration: '',
-          };
-        }
-
-        row.question = answer.question ?? '';
-        row.answer = answer.answer ?? '';
+      if (d.userAnswers.length === 0) {
+        const row = {
+          fullName: d.fullName ?? '',
+          phone: d.phone ?? '',
+          email: d.email ?? '',
+          birthday: d.birthday ?? '',
+          CCCD: d.CCCD ?? '',
+          job: d.job ?? '',
+          sex: d.sex ?? '',
+          other: d.other ?? '',
+          createdAt: d.createdAt ?? '',
+          totalCorrectAnswers: d.totalCorrectAnswers ?? '',
+          correctAnswersRate: d.correctAnswersRate ?? '',
+          duration: d.duration ?? '',
+          question: '',
+          answer: '',
+        };
 
         worksheet.addRow(row);
-      });
+      } else {
+        d.userAnswers.forEach((answer, index) => {
+          let row = {};
+          if (index == 0) {
+            row = {
+              fullName: d.fullName ?? '',
+              phone: d.phone ?? '',
+              email: d.email ?? '',
+              birthday: d.birthday ?? '',
+              CCCD: d.CCCD ?? '',
+              job: d.job ?? '',
+              sex: d.sex ?? '',
+              other: d.other ?? '',
+              createdAt: d.createdAt ?? '',
+              totalCorrectAnswers: d.totalCorrectAnswers ?? '',
+              correctAnswersRate: d.correctAnswersRate ?? '',
+              duration: d.duration ?? ''
+            };
+          } else {
+            row = {
+              fullName: '',
+              phone: '',
+              email: '',
+              birthday: '',
+              CCCD: '',
+              job: '',
+              sex: '',
+              other: '',
+              createdAt: '',
+              totalCorrectAnswers: '',
+              correctAnswersRate: '',
+              duration: '',
+            };
+          }
+  
+          row.question = answer.question ?? '';
+          row.answer = answer.answer ?? '';
+  
+          worksheet.addRow(row);
+        });
+      }
     });
 
     // Set up worksheet 2
