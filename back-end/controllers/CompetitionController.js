@@ -1001,7 +1001,7 @@ const getResultParticipant = async (
       where: {
         idCompetition: id,
       },
-      order: [['createdAt', 'DESC']],
+      order: [['correctAnswersRate', 'DESC'], ['createdAt', 'DESC']],
       include: [
         {
           model: UserAnswers,
